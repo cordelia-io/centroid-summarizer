@@ -1,11 +1,10 @@
 """
-Source code for the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings"
+Derived from original source code for the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings"
 https://aclanthology.org/W17-1003/
 
-Author: Gaetano Rossiello
-Email: gaetano.rossiello@ibm.com
+Original author: Gaetano Rossiello gaetano.rossiello@ibm.com
 """
-from text_summarizer import base
+from centroid_summarizer import base
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
