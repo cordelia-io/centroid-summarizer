@@ -25,7 +25,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Text Processing"
     ],
-    version="0.0.1",
+    version="0.0.2",
     url="https://github.com/cordelia-io/centroid-summarizer",
     author="Jakub Bartczuk, austinjp",
     maintainer="austinjp",
