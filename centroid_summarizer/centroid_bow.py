@@ -10,7 +10,6 @@ class CentroidBOWSummarizer():
     def __init__(
             self,
             language=base.default_language,
-            length_limit=base.default_length_limit,
             topic_threshold=base.default_topic_threshold,
             similarity_threshold=base.default_similarity_threshold
     ):
@@ -20,7 +19,15 @@ class CentroidBOWSummarizer():
         self.topic_threshold = topic_threshold
         self.similarity_threshold = similarity_threshold
 
-    def summarize(self, raw_sentences, clean_sentences, limit=base.default_length_limit):
+    def summarize(self, raw_sentences, clean_sentences, word_count=base.default_word_count):
+        raw_sentences = [
+            " ".join(_) if type(_) == list else _
+            for _ in raw_sentences
+        ]
+        clean_sentences = [
+            " ".join(_) if type(_) == list else _
+            for _ in clean_sentences
+        ]
         vectorizer = CountVectorizer()
         sent_word_matrix = vectorizer.fit_transform(clean_sentences)
 
@@ -48,14 +55,14 @@ class CentroidBOWSummarizer():
         count = 0
         sentences_summary = []
         for s in sentence_scores_sort:
-            if count > limit:
+            if count > word_count:
                 break
             include_flag = True
             for ps in sentences_summary:
                 sim = base.similarity(s[3], ps[3])
                 base.logger.debug(
                     "{}: {}; {}".format(
-                        str(s[0]).ljust(6),
+                        str(s[0]).rjust(6),
                         ps[0],
                         sim
                     )
@@ -66,7 +73,7 @@ class CentroidBOWSummarizer():
             if include_flag:
                 base.logger.debug(
                     "{}: {}".format(
-                        str(s[0]).ljust(6),
+                        str(s[0]).rjust(6),
                         s[1]
                     )
                 )

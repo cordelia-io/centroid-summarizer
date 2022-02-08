@@ -6,9 +6,10 @@ from numpy import count_nonzero, dot
 from numpy.linalg import norm
 from unidecode import unidecode
 
+logging.basicConfig()
 logger = logging.getLogger("centroid_summarizer")
 
-
+# from scipy.spatial.distance import cosine
 def cosine(a,b):
     return dot(a, b)/(norm(a)*norm(b))
 
@@ -22,30 +23,43 @@ def simple_clean(
         text,
         stopwords=nltk_stopwords.words("english")
 ):
+    err = Exception("Expects a string, or an array of strings, or an array of arrays of strings.")
     if type(text) == str:
         arr = sent_tokenize(text)
-    if not hasattr(text,"__iter__"):
-        raise Exception("Expects a string or an array of strings.")
+    else:
+        arr = text
+    if not hasattr(arr, "__iter__"):
+        raise err
     for sentence in arr:
         if type(sentence) != str:
-            sentence = " ".join(sentence)
+            try:
+                sentence = " ".join(sentence)
+            except:
+                raise err
         clean_sentence = []
         for word in word_tokenize(sentence):
-            clean_word = "".join(
-                letter for letter in unidecode(
-                    str(word).lower()
-                )
-                if letter.isalpha()
+            clean = " ".join(
+                "".join(
+                    letter
+                    if letter.isalpha()
+                    else " "
+                    for letter in unidecode(
+                            str(word).lower()
+                    )
+                ).split()
             )
-            if clean_word and clean_word not in stopwords:
-                clean_sentence.append(clean_word)
-        yield " ".join(clean_sentence)
+            if clean:
+                if " " in clean:
+                    for _ in clean.split():
+                        if _ not in stopwords:
+                            clean_sentence.append(_)
+                else:
+                    if clean not in stopwords:
+                        clean_sentence.append(clean)
+        yield clean_sentence
 
 
 default_language = "english"
-default_length_limit = 100
-default_length_limit_embeddings = 10
-default_placeholder = "\0" # "###nul###"
-default_remove_stopwords = True
+default_word_count = 150
 default_similarity_threshold = 0.95
 default_topic_threshold = 0.3
