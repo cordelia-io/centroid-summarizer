@@ -1,33 +1,28 @@
-"""
-Derived from original source code for the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings"
-https://aclanthology.org/W17-1003/
-
-Original author: Gaetano Rossiello gaetano.rossiello@ibm.com
-"""
-from centroid_summarizer import base
 import numpy as np
+
+from centroid_summarizer import base
+from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 
-class CentroidBOWSummarizer(base.BaseSummarizer):
+class CentroidBOWSummarizer():
 
-    def __init__(self,
-                 language='english',
-                 preprocess_type='nltk',
-                 stopwords_remove=True,
-                 length_limit=10,
-                 debug=False,
-                 topic_threshold=0.3,
-                 sim_threshold=0.95):
-        super().__init__(language, preprocess_type, stopwords_remove, length_limit, debug)
+    def __init__(
+            self,
+            language=base.default_language,
+            # remove_stopwords=base.default_remove_stopwords,
+            # stopwords=base.default_stopwords,
+            length_limit=base.default_length_limit,
+            topic_threshold=base.default_topic_threshold,
+            similarity_threshold=base.default_similarity_threshold
+    ):
+
+        base.logger.debug("Initializing centroid bag-of-words summarizer.")
+
         self.topic_threshold = topic_threshold
-        self.sim_threshold = sim_threshold
-        return
+        self.similarity_threshold = similarity_threshold
 
-    def summarize(self, text, limit_type='word', limit=100):
-        raw_sentences = self.sent_tokenize(text)
-        clean_sentences = self.preprocess_text(text)
-
+    def summarize(self, raw_sentences, clean_sentences, limit=base.default_length_limit):
         vectorizer = CountVectorizer()
         sent_word_matrix = vectorizer.fit_transform(clean_sentences)
 
@@ -46,7 +41,11 @@ class CentroidBOWSummarizer(base.BaseSummarizer):
             score = base.similarity(tfidf[i, :], centroid_vector)
             sentences_scores.append((i, raw_sentences[i], score, tfidf[i, :]))
 
-        sentence_scores_sort = sorted(sentences_scores, key=lambda el: el[2], reverse=True)
+        sentence_scores_sort = sorted(
+            sentences_scores,
+            key = lambda _: _[2],
+            reverse=True
+        )
 
         count = 0
         sentences_summary = []
@@ -56,16 +55,26 @@ class CentroidBOWSummarizer(base.BaseSummarizer):
             include_flag = True
             for ps in sentences_summary:
                 sim = base.similarity(s[3], ps[3])
-                # print(s[0], ps[0], sim)
-                if sim > self.sim_threshold:
+                base.logger.debug(
+                    "{}: {}; {}".format(
+                        str(s[0]).ljust(6),
+                        ps[0],
+                        sim
+                    )
+                )
+                if sim > self.similarity_threshold:
                     include_flag = False
+                    break
             if include_flag:
-                # print(s[0], s[1])
-                sentences_summary.append(s)
-                if limit_type == 'word':
-                    count += len(s[1].split())
-                else:
-                    count += len(s[1])
+                base.logger.debug(
+                    "{}: {}".format(
+                        str(s[0]).ljust(6),
+                        s[1]
+                    )
+                )
+                # sentences_summary.append(s)
+                count += len(word_tokenize(s[1]))
+                yield s[1]
 
-        summary = "\n".join([s[1] for s in sentences_summary])
-        return summary
+        # summary = [ s[1] for s in sentences_summary ]
+        # return summary

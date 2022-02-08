@@ -1,39 +1,29 @@
-"""
-Derived from original source code for the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings"
-https://aclanthology.org/W17-1003/
+from nltk.tokenize import sent_tokenize, word_tokenize
 
-Original author: Gaetano Rossiello gaetano.rossiello@ibm.com
-"""
 from centroid_summarizer import base
 
 
-class LeadSummarizer(base.BaseSummarizer):
-    def __init__(
-        self,
-        language="english",
-        preprocess_type="nltk",
-        length_limit=10,
-        stopwords_remove=True,
-        debug=False,
-    ):
-        super().__init__(
-            language, preprocess_type, stopwords_remove, length_limit, debug
-        )
-        return
+default_base_length_limit = 10
 
-    def summarize(self, text, limit_type="word", limit=100):
-        raw_sentences = self.sent_tokenize(text)
+
+class LeadSummarizer():
+    def __init__(
+            self,
+            language = base.default_language,
+            length_limit = default_base_length_limit,
+            remove_stopwords = base.default_remove_stopwords
+    ):
+        super().__init__(language, remove_stopwords, length_limit)
+
+    def summarize(self, text, limit=default_base_length_limit):
+        raw_sentences = sent_tokenize(text)
         count = 0
-        sentences_summary = []
+        # sentences_summary = []
         for s in raw_sentences:
             if count > limit:
                 break
-            sentences_summary.append(s)
-            print("adding ", s)
-            if limit_type == "word":
-                count += len(s.split())
-            else:
-                count += len(s)
+            count += len(word_tokenize(s))
+            # sentences_summary.append(s)
+            yield word_tokenize(s)
 
-        summary = "\n*\n".join([s for s in sentences_summary])
-        return summary
+        # return " ".join(sentences_summary)
