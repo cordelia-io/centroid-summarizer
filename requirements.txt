@@ -1,7 +1,5 @@
-setuptools
-gensim>=3.6.0
-sklearn
-numpy
 nltk
-unidecode
-flashtext
+numpy
+gensim>=4.0.0
+setuptools
+sklearn
