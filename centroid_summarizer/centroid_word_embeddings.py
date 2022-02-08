@@ -165,6 +165,7 @@ class CentroidWordEmbeddingsSummarizer():
         base.logger.info("*** RAW SENTENCES ***")
         for i, s in enumerate(raw_sentences):
             messages = wrap(s)
+            if not messages: continue
             base.logger.info("{}: {}".format(str(i).rjust(6), messages[0]))
             for _ in messages[1:]:
                 base.logger.info(_)
@@ -172,6 +173,7 @@ class CentroidWordEmbeddingsSummarizer():
         base.logger.info("*** CLEAN SENTENCES ***")
         for i, s in enumerate(clean_sentences):
             messages = wrap(s)
+            if not messages: continue
             base.logger.info("{}: {}".format(str(i).rjust(6), messages[0]))
             for _ in messages[1:]:
                 base.logger.info(_)
@@ -180,12 +182,13 @@ class CentroidWordEmbeddingsSummarizer():
 
         base.logger.info("*** CENTROID WORDS ***")
         messages = wrap(str(centroid_words))
-        base.logger.info("{} {}".format(
-            str(len(centroid_words)).rjust(6),
-            messages[0]
-        ))
-        for _ in messages[1:]:
-            base.logger.info(_)
+        if messages:
+            base.logger.info("{} {}".format(
+                str(len(centroid_words)).rjust(6),
+                messages[0]
+            ))
+            for _ in messages[1:]:
+                base.logger.info(_)
 
         centroid_vector = self.compose_vectors(centroid_words)
 
@@ -222,6 +225,7 @@ class CentroidWordEmbeddingsSummarizer():
 
         for s in sentence_scores_sort:
             messages = wrap(str(s[1]))
+            if not messages: continue
             base.logger.info("{}: {}; {}".format(
                 str(s[0]).rjust(6),
                 str(s[2])[0:8].ljust(8),
