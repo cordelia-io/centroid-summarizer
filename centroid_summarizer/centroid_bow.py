@@ -10,8 +10,6 @@ class CentroidBOWSummarizer():
     def __init__(
             self,
             language=base.default_language,
-            # remove_stopwords=base.default_remove_stopwords,
-            # stopwords=base.default_stopwords,
             length_limit=base.default_length_limit,
             topic_threshold=base.default_topic_threshold,
             similarity_threshold=base.default_similarity_threshold

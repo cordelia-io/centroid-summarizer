@@ -104,7 +104,7 @@ class CentroidWordEmbeddingsSummarizer():
     def word_vectors_cache(self, sentences):
         self.word_vectors = dict()
         for s in sentences:
-            words = s.split()
+            words = word_tokenize(s)
             for w in words:
                 # import ipdb
                 # ipdb.set_trace()
@@ -168,7 +168,7 @@ class CentroidWordEmbeddingsSummarizer():
         sentences_scores = []
         for i in range(len(clean_sentences)):
             scores = []
-            words = clean_sentences[i].split()
+            words = word_tokenize(clean_sentences[i])
             sentence_vector = self.compose_vectors(words)
 
             scores.append(base.similarity(sentence_vector, centroid_vector))
