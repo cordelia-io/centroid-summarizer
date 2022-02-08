@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
 import centroid_summarizer
-from unidecode import unidecode
 from nltk.tokenize import word_tokenize, sent_tokenize
 
-
-text = "Here are some raw sentences. They should contain all text from a single document. There should be a lot of them! These have not been pre-processed. Blah blah blah."
+# Courtesy officeipsum.com
+text = "Just do what you think. I trust you. The hair is just too polarising. Low resolution? It looks ok on my screen. This turned out different than I decscribed. Will royalties in the company do instead of cash? Appeal to the client. Sue the vice president, is there a way we can make the page feel more introductory without being cheesy? So can my website be in English? Try a more powerful colour. Concept is bang on, but can we look at a better execution? I really like the colour but can you change it, can we try some other colours maybe? I have an awesome idea for a startup, and I need you to build it for me."
 
 raw = sent_tokenize(text)
 
