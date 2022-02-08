@@ -1,6 +1,8 @@
-# Python package for extractive text summarization using centroid distance
+# Extractive text summarization using centroid distance
 
 This package is derived from the original implementation by the authors of the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings" accepted at MultiLing Workshop at EACL 2017. http://www.aclweb.org/anthology/W17-1003
+
+Original author: Gaetano Rossiello [gaetano.rossiello@ibm.com](mailto:gaetano.rossiello@ibm.com)
 
 ## Tutorial
 
