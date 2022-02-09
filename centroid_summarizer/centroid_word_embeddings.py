@@ -9,7 +9,7 @@ from textwrap import wrap as real_wrap
 cols = get_terminal_size().columns - 40
 
 def wrap(s):
-    return real_wrap(s, subsequent_indent=" "*8, width=cols)
+    return real_wrap(str(s), subsequent_indent=" "*8, width=cols)
 
 
 def certainty_func_average(scores):

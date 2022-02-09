@@ -61,27 +61,42 @@ Output from the above:
 ```
 Bag-of-words summary:
 
-This will require more collaborations and training and working with AI. That’s why it has become more critical than ever for educational institutions to integrate new cloud and AI technologies. According to Manish Prakash, Country General Manager-PS, Health and Education, Microsoft India, said, "With AI being the defining technology of our time, it is transforming lives and industry and the jobs of tomorrow will require a different skillset. The program was developed to provide job ready skills to programmers who wanted to hone their skills in AI and data science with a series of online courses which featured hands-on labs and expert instructors as well. The program is an attempt to ramp up the institutional set-up and build capabilities among the educators to educate the workforce of tomorrow." This program also included developer-focused AI school that provided a bunch of assets to help build AI skills.
+This will require more collaborations and training and working with AI. That’s
+why it has become more critical than ever for educational institutions to 
+integrate new cloud and AI technologies. According to Manish Prakash, Country 
+General Manager-PS, Health and Education, Microsoft India, said, "With AI being
+the defining technology of our time, it is transforming lives and industry and
+the jobs of tomorrow will require a different skillset. The program was 
+developed to provide job ready skills to programmers who wanted to hone their
+skills in AI and data science with a series of online courses which featured
+hands-on labs and expert instructors as well. The program is an attempt to ramp
+up the institutional set-up and build capabilities among the educators to
+educate the workforce of tomorrow." This program also included 
+developer-focused AI school that provided a bunch of assets to help build AI
+skills.
 
 Embedding summary:
 
-In an attempt to build an AI-ready workforce, Microsoft announced Intelligent Cloud Hub which has been launched to empower the next generation of students with AI-ready skills. Envisioned as a three-year collaborative program, Intelligent Cloud Hub will support around 100 institutions with AI infrastructure, course content and curriculum, developer support, development tools and give students access to cloud and AI services. This will require more collaborations and training and working with AI. That’s why it has become more critical than ever for educational institutions to integrate new cloud and AI technologies.
+In an attempt to build an AI-ready workforce, Microsoft announced Intelligent
+Cloud Hub which has been launched to empower the next generation of students
+with AI-ready skills. Envisioned as a three-year collaborative program,
+Intelligent Cloud Hub will support around 100 institutions with AI 
+infrastructure, course content and curriculum, developer support, development
+tools and give students access to cloud and AI services. This will require more
+collaborations and training and working with AI. That’s why it has become more
+critical than ever for educational institutions to integrate new cloud and AI
+technologies.
 ```
 
 
 ## About
 
-This package is derived from the original implementation by the authors of the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings" accepted at MultiLing Workshop at EACL 2017. http://www.aclweb.org/anthology/W17-1003
+This package is derived from the [original implementation](https://github.com/gaetangate/text-summarizer) by the authors of the paper "Centroid-based Text Summarization through Compositionality of Word Embeddings" accepted at MultiLing Workshop at EACL 2017. http://www.aclweb.org/anthology/W17-1003
 
-Original author: Gaetano Rossiello [gaetano.rossiello@ibm.com](mailto:gaetano.rossiello@ibm.com)
-
-## Tutorial
-
-The method is described in this step-by-step guide: [A Better Approach to Text Summarization](https://towardsdatascience.com/a-better-approach-to-text-summarization-d7139b571439)
+The method is described in [A Better Approach to Text Summarization](https://towardsdatascience.com/a-better-approach-to-text-summarization-d7139b571439) by [@vinimonteiro](https://github.com/vinimonteiro).
 
 
 ## Citation
-
 
 ```bibtex
 @inproceedings{DBLP:conf/acl-multiling/RossielloBS17,
