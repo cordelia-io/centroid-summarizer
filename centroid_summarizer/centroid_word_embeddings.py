@@ -43,7 +43,7 @@ class CentroidWordEmbeddingsSummarizer():
             embedding_model,
             topic_threshold = base.default_topic_threshold,
             similarity_threshold = base.default_similarity_threshold,
-            reordering=True,
+            keep_original_order=True,
             zero_center_embeddings=False,
             keep_first=False,
             bow_multiplier=1,
@@ -57,7 +57,7 @@ class CentroidWordEmbeddingsSummarizer():
 
         self.topic_threshold = topic_threshold
         self.similarity_threshold = similarity_threshold
-        self.reordering = reordering
+        self.keep_original_order = keep_original_order
 
         self.keep_first = keep_first
         self.bow_multiplier = bow_multiplier
@@ -145,7 +145,6 @@ class CentroidWordEmbeddingsSummarizer():
             clean_sentences,
             word_count = base.default_word_count
     ):
-
         # base.logger.info(
         #     "ORIGINAL TEXT STATS = {0} chars, {1} words, {2} sentences".format(
         #         sum(
@@ -177,6 +176,23 @@ class CentroidWordEmbeddingsSummarizer():
             base.logger.info("{}: {}".format(str(i).rjust(6), messages[0]))
             for _ in messages[1:]:
                 base.logger.info(_)
+
+        if word_count:
+            count = 0
+            for s in self.rank(raw_sentences,clean_sentences):
+                if count >= word_count:
+                    break
+                yield s[1]
+                count += len(s[1].split())
+        else:
+            for s in self.rank(raw_sentences,clean_sentences):
+                yield s[1]
+
+    def rank(
+            self,
+            raw_sentences,
+            clean_sentences
+    ):
 
         centroid_words = self.get_topic_idf(clean_sentences)
 
@@ -234,21 +250,17 @@ class CentroidWordEmbeddingsSummarizer():
             for _ in messages[1:]:
                 base.logger.info(_)
 
-        count = 0
         sentences_summary = []
 
         if self.keep_first:
             for s in sentence_scores_sort:
                 if s[0] == 0:
                     sentences_summary.append(s)
-                    count += len(word_tokenize(s[1]))
                     sentence_scores_sort.remove(s)
                     break
 
+        seen = set()
         for s in sentence_scores_sort:
-            base.logger.debug("Count: {}".format(count))
-            if count > word_count:
-                break
             include_flag = True
             for ps in sentences_summary:
                 sim = base.similarity(s[3], ps[3])
@@ -263,19 +275,15 @@ class CentroidWordEmbeddingsSummarizer():
                     include_flag = False
                     break
             if include_flag:
-                base.logger.debug("Including {} {}".format(
-                    str(s[0]),
-                    str(s[1])
-                )[0:cols])
-                sentences_summary.append(s)
-                count += len(word_tokenize(s[1]))
-
-        if self.reordering:
-            sentences_summary = sorted(
-                sentences_summary,
-                key = lambda _: _[0],
-                reverse = False
-            )
+                if str(s[1]) not in seen:
+                    base.logger.debug(
+                        "Including {} {}".format(
+                            str(s[0]),
+                            str(s[1])
+                        )[0:cols]
+                    )
+                    sentences_summary.append(s)
+                seen.add(str(s[1]))
 
         # summary = " ".join([s[1] for s in sentences_summary])
         # base.logger.info(
@@ -287,8 +295,18 @@ class CentroidWordEmbeddingsSummarizer():
         # base.logger.info(summary)
         # return summary
 
-        for s in sentences_summary:
-            yield(s[1])
+        # yield centroid_words
+
+        if self.keep_original_order:
+            for _ in sorted(
+                    sentences_summary,
+                    key = lambda _: _[0],
+                    reverse = False
+            ):
+                yield _
+        else:
+            for _ in sentences_summary:
+                yield _
 
 
     def _zero_center_embedding_coordinates(self):
