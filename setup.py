@@ -27,7 +27,7 @@ setup(
     ],
     version="0.0.1",
     url="https://github.com/cordelia-io/centroid-summarizer",
-    author="Jakub Bartczuk, austinjp",
+    author="Gaetano Rossiello, Pierpaolo Basile, Giovanni Semeraro, Jakub Bartczuk, olivier-compilatio, Vinicius Monteiro, austinjp",
     maintainer="austinjp",
     packages=find_packages(),
     install_requires=requirements
