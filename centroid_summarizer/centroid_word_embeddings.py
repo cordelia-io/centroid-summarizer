@@ -6,7 +6,18 @@ from os import get_terminal_size
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from textwrap import wrap as real_wrap
 
-cols = get_terminal_size().columns - 40
+cols_offset = 40
+cols = 80 - cols_offset
+try:
+    cols = get_terminal_size().columns - cols_offset
+except Exception as e:
+    try:
+        import termios, fcntl, struct, sys
+        s = struct.pack("hh", 0, 0)
+        x = fcntl.ioctl(sys.stdout.fileno(), termios.TIOCGWINSZ, s)
+        cols = struct.unpack("hh", x)[1] - cols_offset
+    except Exception as e:
+        pass
 
 def wrap(s):
     return real_wrap(str(s), subsequent_indent=" "*8, width=cols)
